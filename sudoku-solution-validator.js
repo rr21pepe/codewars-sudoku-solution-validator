@@ -1,34 +1,27 @@
-const hasAllNumbers = numbers => {
-  return [...new Set(numbers)].filter(number => number !== 0).length === 9
-}
+const range = n =>
+  Array(n)
+    .fill()
+    .map((_, i) => i)
 
-const getColumns = board =>
-  Array(9)
-    .fill(null)
-    .map((_, idx) => board.map(row => row[idx]))
+const toXY = (i, width) => [i % width, Math.floor(i / width)]
 
-const getBlocks = board => {
-  const blocks = []
+const hasAllNumbers = numbers =>
+  [...new Set(numbers)].filter(number => number !== 0).length === 9
 
-  for (let i = 0; i < 9; i += 3) {
-    let block = []
+const getColumns = board => range(9).map(idx => board.map(row => row[idx]))
 
-    for (let j = 0; j < 9; j++) {
-      block.push(board[i][j])
-      block.push(board[i + 1][j])
-      block.push(board[i + 2][j])
+const getBlocks = board =>
+  range(9).map(i => {
+    const [blockX, blockY] = toXY(i, 3)
 
-      if ((j + 1) % 3 === 0) {
-        blocks.push(block)
-        block = []
-      }
-    }
-  }
+    return range(9).map(j => {
+      const [cellX, cellY] = toXY(j, 3)
 
-  return blocks
-}
+      return board[cellY + 3 * blockY][cellX + 3 * blockX]
+    })
+  })
 
-const validate = arr => arr.filter(el => !hasAllNumbers(el)).length === 0
+const validate = arr => arr.every(hasAllNumbers)
 
 const validSolution = board => {
   const columns = getColumns(board)
