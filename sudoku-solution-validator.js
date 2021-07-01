@@ -7,7 +7,7 @@ const hasAllNumbers = (numbers) => {
 const getColumns = board =>
     Array(9)
         .fill(null)
-        .map((_, idx) => [...board].map(row => row[idx]))
+        .map((_, idx) => board.map(row => row[idx]))
 
 const getBlocks = board => {
     const blocks = []
